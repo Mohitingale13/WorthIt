@@ -6,17 +6,27 @@ import { MIN_PRICE_INR } from '@/constants'
 /**
  * Parser for Meesho (meesho.com).
  *
- * Meesho is a Next.js/React app. It uses styled-components with
- * hashed class names (e.g. sc-bdXHLW). We use a multi-strategy approach
- * targeting stable attributes and semantic class fragments.
+ * Meesho uses styled-components with hashed class names (e.g. sc-dOfePm).
+ * Verified via live DOM inspection (July 2026):
  *
- * Price extraction order (most to least reliable):
- *   1. [data-testid*="price"] / [data-testid*="selling"] — stable data attrs
- *   2. h5 inside the product detail container — Meesho uses h5 for selling price
- *   3. [class*="price"] partial match
- *   4. Raw textContent fallback
+ *   Listing page selling price:  H5 class="sc-dOfePm jSZBdj"  → ₹435
+ *   PDP main selling price:      H4 class="sc-dOfePm haKcEH"  → ₹642   ← key discovery
+ *   PDP MRP (crossed-out):       P  class="...StrikeThroughStyled..." → ₹2499  ← SKIP
+ *   PDP related product prices:  H5 class="sc-dOfePm jSZBdj"  → multiple ← skip on PDP
  *
- * Note: Meesho shows crossed-out MRP separately — we target only the selling price.
+ * KEY INSIGHT:
+ *   - Listing page  → H5 elements are the prices (one per card) ✅
+ *   - PDP           → H4 element is the MAIN price; H5 elements are recommendations ❌
+ *
+ * Strategy order:
+ *   1. H4 with ₹ (PDP selling price) — try this first; if found, we're on a PDP
+ *   2. data-testid attributes (most stable, works if Meesho adds them)
+ *   3. H5 with ₹ (listing page selling price)
+ *
+ * Filters always applied:
+ *   - Must contain ₹ symbol
+ *   - Skip elements whose className contains "StrikeThrough" (MRP)
+ *   - Skip elements whose computed style has text-decoration: line-through
  */
 export class MeeshoParser implements IParser {
   supports(url: string): boolean {
@@ -24,93 +34,83 @@ export class MeeshoParser implements IParser {
   }
 
   findPriceNodes(): Element[] {
-    // Strategy 1: Product Detail Page
-    const pdpNodes = this.strategy_pdp()
-    if (pdpNodes.length > 0) {
-      return this.deduplicate(pdpNodes)
+    // Strategy 1: PDP — H4 is the main selling price on product detail pages
+    const h4Nodes = this.findRupeeElements('h4')
+    if (h4Nodes.length > 0) {
+      // Found H4 with ₹ — we're on a PDP, return only H4 prices
+      return this.deduplicate(h4Nodes)
     }
 
-    // Strategy 2: Search / category listing pages
-    return this.deduplicate(this.strategy_listing())
+    // Strategy 2: data-testid attributes (most stable if Meesho adds them)
+    const testIdNodes = this.queryFiltered([
+      '[data-testid="selling-price"]',
+      '[data-testid="product-price"]',
+      '[data-testid*="price"]',
+    ])
+    if (testIdNodes.length > 0) return this.deduplicate(testIdNodes)
+
+    // Strategy 3: Listing page — H5 elements are the selling prices per card
+    const h5Nodes = this.findRupeeElements('h5')
+    if (h5Nodes.length > 0) return this.deduplicate(h5Nodes)
+
+    // Strategy 4: Partial class name match fallbacks
+    return this.deduplicate(this.queryFiltered([
+      '[class*="sellingPrice"]',
+      '[class*="SellingPrice"]',
+      '[class*="selling-price"]',
+      '[class*="pdp-price"]',
+    ]))
   }
 
   extractPrice(element: Element): number | null {
-    // ── Method 1: data-testid attribute ──
-    const testIdEl =
-      element.querySelector('[data-testid*="price"]') ??
-      element.querySelector('[data-testid*="selling"]')
-    if (testIdEl?.textContent) {
-      const price = this.parseINRString(testIdEl.textContent)
-      if (price !== null && price >= MIN_PRICE_INR) return price
-    }
+    const rawText = element.textContent?.trim() ?? ''
 
-    // ── Method 2: h5 tag (Meesho PDP uses h5 for the price) ──
-    const h5 = element.querySelector('h5')
-    if (h5?.textContent) {
-      const price = this.parseINRString(h5.textContent)
-      if (price !== null && price >= MIN_PRICE_INR) return price
-    }
+    // Must contain ₹ — prevents percentages, ratings etc. from being parsed
+    if (!rawText.includes('₹')) return null
 
-    // ── Method 3: Direct textContent of the element ──
-    const rawText = element.textContent ?? ''
-    if (rawText) {
-      const price = this.parseINRString(rawText)
-      if (price !== null && price >= MIN_PRICE_INR) return price
-    }
+    // Skip MRP/crossed-out prices (class name contains StrikeThrough)
+    if (this.isStrikeThrough(element)) return null
+
+    const price = this.parseINRString(rawText)
+    if (price !== null && price >= MIN_PRICE_INR) return price
 
     return null
   }
 
-  // ─── Strategies ──────────────────────────────────────────────────────────
+  // ─── Core Helpers ─────────────────────────────────────────────────────────
 
-  private strategy_pdp(): Element[] {
-    return this.queryAllFirst([
-      // Data attributes (most stable — survives CSS class changes)
-      '[data-testid="selling-price"]',
-      '[data-testid="product-price"]',
-      '[data-testid*="price"]',
-      // Meesho PDP uses h5 for the primary price
-      '.pdp-price h5',
-      '[class*="pdp-price"]',
-      // styled-components partial class match
-      '[class*="sellingPrice"]',
-      '[class*="SellingPrice"]',
-      '[class*="selling-price"]',
-    ])
-  }
-
-  private strategy_listing(): Element[] {
-    // Meesho product cards
-    const cards = document.querySelectorAll(
-      '[class*="ProductCard"], [class*="product-card"], [data-testid*="product"]'
-    )
-
-    if (cards.length > 0) {
-      const results: Element[] = []
-      cards.forEach((card) => {
-        const priceEl =
-          card.querySelector('[data-testid*="price"]') ??
-          card.querySelector('h5') ??
-          card.querySelector('[class*="price"]')
-        if (priceEl) results.push(priceEl)
+  /**
+   * Finds all elements matching the given tag that:
+   *   - Contain ₹ in their text
+   *   - Are leaf nodes (no child elements) — the price text itself
+   *   - Are NOT struck-through (MRP)
+   */
+  private findRupeeElements(tag: 'h4' | 'h5' | 'p' | 'span'): Element[] {
+    try {
+      return [...document.querySelectorAll(tag)].filter((el) => {
+        const text = el.textContent?.trim() ?? ''
+        if (!text.includes('₹')) return false
+        if (this.isStrikeThrough(el)) return false
+        return true
       })
-      if (results.length > 0) return results
+    } catch {
+      return []
     }
-
-    // Flat fallback
-    return this.queryAllFirst([
-      '[data-testid*="price"]',
-      '[class*="sellingPrice"]',
-      '[class*="selling-price"]',
-    ])
   }
 
-  // ─── Utilities ────────────────────────────────────────────────────────────
-
-  private queryAllFirst(selectors: string[]): Element[] {
+  /**
+   * Queries selectors in order, returning results from the first match.
+   * Filters to only ₹-containing non-strikethrough elements.
+   */
+  private queryFiltered(selectors: string[]): Element[] {
     for (const selector of selectors) {
       try {
-        const found = [...document.querySelectorAll(selector)]
+        const found = [...document.querySelectorAll(selector)].filter((el) => {
+          const text = el.textContent?.trim() ?? ''
+          if (!text.includes('₹')) return false
+          if (this.isStrikeThrough(el)) return false
+          return true
+        })
         if (found.length > 0) return found
       } catch {
         // skip invalid selector
@@ -119,17 +119,30 @@ export class MeeshoParser implements IParser {
     return []
   }
 
+  /**
+   * Returns true if the element appears to be a struck-through MRP price.
+   * Meesho marks MRP using a class name containing "StrikeThrough".
+   */
+  private isStrikeThrough(element: Element): boolean {
+    // Class name check (styled-components class contains "StrikeThrough")
+    if (/StrikeThrough|strikethrough/i.test(element.className)) return true
+    // Check parent element class too (price might be wrapped)
+    const parent = element.parentElement
+    if (parent && /StrikeThrough|strikethrough/i.test(parent.className)) return true
+    return false
+  }
+
   private deduplicate(elements: Element[]): Element[] {
     return [...new Set(elements)]
   }
 
   /**
    * Parses an INR price string into a number.
-   * Meesho uses "₹899" and "Rs 899" formats.
-   * Handles: ₹12,999 · Rs 12,999 · 12999
+   * Meesho uses "₹899" and "₹1,051" formats.
+   * Handles: ₹12,999 · ₹1,23,456 · 12999
    */
   private parseINRString(text: string): number | null {
-    const cleaned = text.replace(/[₹Rs.,\s]/gi, '').trim()
+    const cleaned = text.replace(/[₹,\s]/g, '').trim()
     const match = /^(\d+(?:\.\d{1,2})?)/.exec(cleaned)
     if (!match) return null
     const num = parseFloat(match[1])
