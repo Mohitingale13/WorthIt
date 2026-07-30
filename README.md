@@ -2,7 +2,15 @@
 
 > Every purchase costs more than money. It costs your time.
 
-**WorthIt** is a privacy-first Chrome Extension that translates Amazon India prices into the actual hours of work it took you to earn them. By providing personal context, it helps you make more intentional purchasing decisions—without creating guilt.
+**WorthIt** is a privacy-first Chrome Extension that translates prices on India's biggest shopping sites into the actual hours of work it took you to earn them. By providing personal context, it helps you make more intentional purchasing decisions—without creating guilt.
+
+### ✅ Supported Sites
+| Site | Status |
+|---|---|
+| Amazon India (`amazon.in`) | ✅ Supported |
+| Flipkart (`flipkart.com`) | ✅ Supported |
+| Myntra (`myntra.com`) | ✅ Supported |
+| Meesho (`meesho.com`) | ✅ Supported |
 
 ---
 
@@ -25,8 +33,8 @@ That's it! The extension is installed.
 
 1. Click the WorthIt icon in your Chrome extensions menu.
 2. Select your salary tier (or enter a custom annual salary).
-3. Browse any product on **Amazon India (`amazon.in`)**.
-4. You will see a small label like `≈ 7.4 hours of your work` appear directly underneath the price.
+3. Browse any product on **Amazon India, Flipkart, Myntra, or Meesho**.
+4. See "≈ X hours of your work" appear beneath every price — automatically.
 5. Hover over the label to see the exact math!
 
 ---
@@ -85,6 +93,11 @@ Want to build it from source or contribute?
    *The optimized, minified extension will be in the `dist/` folder.*
 
 ### How it works technically
-- **Content Script (`src/content`)**: Uses a `MutationObserver` to watch the Amazon DOM for price elements. When it finds a price, it injects a Shadow DOM element to isolate CSS and prevent Amazon's stylesheets from bleeding into the label.
+- **Content Script (`src/content`)**: Uses a `MutationObserver` to watch the DOM for price elements on any supported site. When it finds a price, it injects a Shadow DOM element to isolate CSS.
+- **Parser Registry (`src/content/parsers`)**: Each supported site has its own `IParser` implementation. The registry picks the correct parser based on the current URL. Adding a new site is as simple as adding one file + one line in the registry.
+  - `AmazonParser` — Amazon India
+  - `FlipkartParser` — Flipkart
+  - `MyntraParser` — Myntra
+  - `MeeshoParser` — Meesho
 - **Storage (`src/storage`)**: Uses `chrome.storage.local` with strict context invalidation checks.
 - **Popup (`src/popup`)**: A React app that manages user onboarding and salary configurations.

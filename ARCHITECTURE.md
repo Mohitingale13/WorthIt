@@ -60,12 +60,19 @@ interface IParser {
 
 Each website implements this interface. The **ParserRegistry** (`src/content/parsers/index.ts`) maps URLs to parsers.
 
-**Adding a new website:**
-1. Create `src/content/parsers/myntra/MyntraParser.ts`
-2. Implement `IParser`
-3. Register in `src/content/parsers/index.ts`
+**Current Parsers:**
+| Parser | Site | Strategy |
+|---|---|---|
+| `AmazonParser` | amazon.in | `.a-offscreen` hidden span → structured parts → raw text |
+| `FlipkartParser` | flipkart.com | `data-testid` → partial class match (`[class*="Nx9bqj"]`) → semantic → raw text |
+| `MyntraParser` | myntra.com | `.pdp-price` BEM class → semantic → raw text. Handles both `₹` and `Rs.` formats |
+| `MeeshoParser` | meesho.com | `data-testid` → `h5` tag → semantic → raw text. Resilient to styled-components hashed classes |
 
-No other files need to change.
+**Adding a new website:**
+1. Create `src/content/parsers/<site>/<Site>Parser.ts`
+2. Implement `IParser` (3 methods: `supports`, `findPriceNodes`, `extractPrice`)
+3. Register in `src/content/parsers/index.ts`
+4. Add the URL pattern to `manifest.json` → `content_scripts.matches`, `host_permissions`, and `web_accessible_resources`
 
 ### Scanner (MutationObserver)
 

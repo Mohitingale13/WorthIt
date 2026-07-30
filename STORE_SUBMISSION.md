@@ -76,7 +76,7 @@ Compress-Archive -Path dist\* -DestinationPath worthit-v1.0.0.zip
 **Name:** WorthIt
 
 **Short Description (up to 132 chars):**
-> See every Amazon price as hours of your work. Understand what things truly cost — in your time.
+> See every price on Amazon, Flipkart, Myntra & Meesho as hours of your work. What does it truly cost — in your time?
 
 **Full Description:**
 
@@ -86,10 +86,18 @@ WorthIt helps you understand the real cost of purchases by translating prices in
 Every purchase costs more than money. It costs your time. Money is replaceable. Time isn't.
 
 ──────────────────────────────────────
+SUPPORTED WEBSITES
+──────────────────────────────────────
+✓ Amazon India (amazon.in)
+✓ Flipkart (flipkart.com)
+✓ Myntra (myntra.com)
+✓ Meesho (meesho.com)
+
+──────────────────────────────────────
 HOW IT WORKS
 ──────────────────────────────────────
 1. Click the WorthIt icon and choose your salary tier (Student / Entry / Mid / Senior / Custom)
-2. Visit any Amazon India product page
+2. Visit any product page on a supported shopping site
 3. See "≈ X hours of your work" appear beneath every price — automatically
 4. Hover for a full breakdown: your hourly value, calculation, and the result
 

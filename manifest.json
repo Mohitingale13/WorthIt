@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "WorthIt",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Understand the true cost of purchases — in your work hours, not just money.",
 
   "icons": {
@@ -31,7 +31,13 @@
     {
       "matches": [
         "https://www.amazon.in/*",
-        "https://amazon.in/*"
+        "https://amazon.in/*",
+        "https://www.flipkart.com/*",
+        "https://flipkart.com/*",
+        "https://www.myntra.com/*",
+        "https://myntra.com/*",
+        "https://meesho.com/*",
+        "https://www.meesho.com/*"
       ],
       "js": ["src/content/index.tsx"],
       "run_at": "document_idle",
@@ -46,7 +52,13 @@
 
   "host_permissions": [
     "https://www.amazon.in/*",
-    "https://amazon.in/*"
+    "https://amazon.in/*",
+    "https://www.flipkart.com/*",
+    "https://flipkart.com/*",
+    "https://www.myntra.com/*",
+    "https://myntra.com/*",
+    "https://meesho.com/*",
+    "https://www.meesho.com/*"
   ],
 
   "web_accessible_resources": [
@@ -54,7 +66,13 @@
       "resources": ["assets/*"],
       "matches": [
         "https://www.amazon.in/*",
-        "https://amazon.in/*"
+        "https://amazon.in/*",
+        "https://www.flipkart.com/*",
+        "https://flipkart.com/*",
+        "https://www.myntra.com/*",
+        "https://myntra.com/*",
+        "https://meesho.com/*",
+        "https://www.meesho.com/*"
       ]
     }
   ]

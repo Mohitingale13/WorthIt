@@ -55,7 +55,7 @@ This roadmap is organized into milestones. Each milestone is shipped and validat
 - [x] Unit tests — Calculator (20 tests)
 - [x] Unit tests — Storage wrappers (11 tests)
 - [x] Unit tests — Parser (AmazonParser + Registry) (15 tests — 11 parser, 4 registry)
-- [x] `npm test` — 57/57 passing, 0 failures
+- [x] `npm test` — 70/70 passing, 0 failures
 - [x] Vitest configured with coverage thresholds (80% lines/functions, 75% branches)
 - [x] Chrome Web Store submission guide — `STORE_SUBMISSION.md`
 - [x] `scripts/resize-icons.mjs` — tool to generate proper 16/32/48px icons
@@ -65,13 +65,30 @@ This roadmap is organized into milestones. Each milestone is shipped and validat
 
 ---
 
+## ✅ Milestone 6 — Multi-Site Expansion (Complete)
+
+- [x] FlipkartParser — multi-strategy with partial class name matching
+- [x] MyntraParser — BEM-style selectors + Rs./₹ price format support
+- [x] MeeshoParser — data-testid targeting for styled-components resilience
+- [x] manifest.json v1.1.0 — all 3 sites added to `content_scripts`, `host_permissions`, `web_accessible_resources`
+- [x] Parser Registry updated with all 4 parsers
+- [x] Unit tests for all 3 new parsers (supports() URL matching, registry routing)
+- [x] `npm test` — 70/70 passing, 0 failures
+
+---
+
 ## 🔮 Future Milestones
 
-### Multi-Site Expansion
-- [ ] Flipkart parser
-- [ ] Myntra parser
+### More Sites
 - [ ] Ajio parser
-- [ ] Meesho parser
+- [ ] Nykaa parser
+- [ ] Tata CLiQ parser
+- [ ] Snapdeal parser
+
+### Features
+- [ ] Price history tracking
+- [ ] Monthly spending summary
+- [ ] "Is it worth it?" goal-setting mode
 
 ### UX Enhancements
 - [ ] Cart total injection (show total hours for entire cart)
