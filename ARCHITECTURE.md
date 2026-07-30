@@ -19,27 +19,27 @@ Every architectural decision in WorthIt is guided by these principles:
 ## System Overview
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Chrome Extension                          │
-│                                                                  │
+┌────────────────────────────────────────────────────────────────┐
+│                        Chrome Extension                        │
+│                                                                │
 │  ┌──────────────┐   ┌──────────────────────────────────────┐   │
-│  │   Popup UI   │   │           Content Script              │   │
-│  │              │   │                                        │   │
-│  │  Onboarding  │   │  ParserRegistry                       │   │
-│  │  Settings    │   │       └── AmazonParser                │   │
-│  │  Live Preview│   │                 ↓                     │   │
-│  └──────┬───────┘   │  PriceScanner (MutationObserver)      │   │
-│         │           │       └── debounced scan               │   │
-│  chrome.storage.local│               ↓                      │   │
-│         │           │  ShadowInjector                        │   │
-│         └──────────►│       └── React root per price         │   │
-│                     │            └── WorthItLabel            │   │
-│  ┌──────────────┐   │            └── Tooltip                 │   │
-│  │  Background  │   │                                        │   │
-│  │ Service Worker│  │  FirstRunBanner (page overlay)         │   │
+│  │   Popup UI   │   │           Content Script             │   │
+│  │              │   │                                      │   │
+│  │  Onboarding  │   │  ParserRegistry                      │   │
+│  │  Settings    │   │       └── AmazonParser               │   │
+│  │  Live Preview│   │                 ↓                    │   │
+│  └──────┬───────┘   │  PriceScanner (MutationObserver)     │   │
+│         │           │       └── debounced scan             │   │
+│  chrome.storage.local│               ↓                     │   │
+│         │           │  ShadowInjector                      │   │
+│         └──────────►│       └── React root per price       │   │
+│                     │            └── WorthItLabel          │   │
+│  ┌──────────────┐   │            └── Tooltip               │   │
+│  │  Background  │   │                                      │   │
+│  │ Service Worker│  │  FirstRunBanner (page overlay)       │   │
 │  │  (Minimal)   │   └──────────────────────────────────────┘   │
-│  └──────────────┘                                               │
-└─────────────────────────────────────────────────────────────────┘
+│  └──────────────┘                                              │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 ---
