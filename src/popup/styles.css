@@ -1,0 +1,445 @@
+@import "tailwindcss";
+
+/* ─── Google Font ─────────────────────────────────────────────────────────── */
+
+:root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS — Terracotta + Deep Navy
+   Warm, human, timeless. One accent: terracotta #C4704A.
+────────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Backgrounds */
+  --color-bg:           #F5F0EB;   /* warm sand */
+  --color-surface:      #FDFAF7;   /* warm white */
+  --color-surface-hover:#F0E8DF;   /* sand hover */
+
+  /* Borders */
+  --color-border:       #E0D5C8;   /* warm taupe */
+  --color-border-light: #EDE5DA;   /* lighter taupe */
+
+  /* Text */
+  --color-text-primary:   #1C2B3A; /* deep navy */
+  --color-text-secondary: #4A5D6E; /* muted navy */
+  --color-text-muted:     #7D8E9C; /* soft blue-grey */
+
+  /* Accent — Terracotta, one color to rule them all */
+  --color-accent:       #C4704A;
+  --color-accent-hover: #A85C38;
+  --color-accent-light: #FBF0E8;
+  --color-accent-text:  #8B4A2E;
+
+  /* Semantic */
+  --color-success:       #5B8A6E;  /* forest green — for privacy badge */
+  --color-success-light: #EAF4EF;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg:           #1A1612;
+    --color-surface:      #231E18;
+    --color-surface-hover:#2D2520;
+    --color-border:       #3D3028;
+    --color-border-light: #322820;
+    --color-text-primary:   #F2E8DE;
+    --color-text-secondary: #A89880;
+    --color-text-muted:     #7A6B58;
+    --color-accent:       #D4845E;
+    --color-accent-hover: #C4704A;
+    --color-accent-light: #2D1E14;
+    --color-accent-text:  #E8A080;
+    --color-success:       #6FA882;
+    --color-success-light: #0F2218;
+  }
+}
+
+/* ─── Base Reset ───────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  width: 340px;
+  min-height: 480px;
+  overflow-x: hidden;
+}
+
+/* ─── Typography ──────────────────────────────────────────────────────────── */
+
+h1, h2, h3 {
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Layout ──────────────────────────────────────────────────────────────── */
+
+.popup-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+  background: var(--color-bg);
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────────── */
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.popup-logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.popup-logo-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--color-accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.popup-logo-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+}
+
+.popup-version {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: var(--color-surface-hover);
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+}
+
+/* ─── Content ─────────────────────────────────────────────────────────────── */
+
+.popup-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ─── Onboarding Hero ─────────────────────────────────────────────────────── */
+
+.onboarding-hero {
+  text-align: center;
+  padding: 6px 0 2px;
+}
+
+.onboarding-emoji {
+  font-size: 38px;
+  margin-bottom: 11px;
+  display: block;
+}
+
+.onboarding-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+
+.onboarding-subtitle {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+/* ─── Form Controls ───────────────────────────────────────────────────────── */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 9px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237D8E9C' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  transition: border-color 0.15s ease;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 9px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.form-hint {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* ─── Preview Card ────────────────────────────────────────────────────────── */
+
+.preview-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.preview-card-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: 9px;
+}
+
+.preview-price-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.preview-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.preview-time {
+  font-size: 12px;
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.preview-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+  margin: 10px 0;
+}
+
+.preview-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.preview-meta-label {
+  color: var(--color-text-muted);
+}
+
+.preview-meta-value {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* ─── Privacy Badge ───────────────────────────────────────────────────────── */
+
+.privacy-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  background: var(--color-success-light);
+  border-radius: 8px;
+  font-size: 11.5px;
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
+
+.btn-primary {
+  width: 100%;
+  padding: 11px;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  letter-spacing: -0.01em;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── Settings View ───────────────────────────────────────────────────────── */
+
+.settings-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.settings-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+/* ─── Stats Grid ──────────────────────────────────────────────────────────── */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 11px 12px;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* ─── Status Indicator ────────────────────────────────────────────────────── */
+
+.status-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--color-success);
+  font-weight: 600;
+  background: var(--color-success-light);
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-success);
+}
+
+/* ─── Footer ──────────────────────────────────────────────────────────────── */
+
+.popup-footer {
+  padding: 11px 20px;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  letter-spacing: 0.01em;
+}
+
+/* ─── Reduced Motion ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

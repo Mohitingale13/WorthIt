@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "WorthIt",
+  "version": "1.0.0",
+  "description": "Understand the true cost of purchases — in your work hours, not just money.",
+
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    },
+    "default_title": "WorthIt — Your purchase in work hours"
+  },
+
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.amazon.in/*",
+        "https://amazon.in/*"
+      ],
+      "js": ["src/content/index.tsx"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+
+  "host_permissions": [
+    "https://www.amazon.in/*",
+    "https://amazon.in/*"
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*"],
+      "matches": [
+        "https://www.amazon.in/*",
+        "https://amazon.in/*"
+      ]
+    }
+  ]
+}

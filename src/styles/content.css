@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+/* ─── WorthIt Content Script Styles ──────────────────────────────────────────
+   Scoped inside Shadow DOM — never bleeds into the host page.
+   Palette: Terracotta + Deep Navy on warm backgrounds.
+   Single accent: #C4704A (terracotta).
+────────────────────────────────────────────────────────────────────────────── */
+
+:host {
+  all: initial;
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+  /*
+   * Label text: FIXED dark color — never changes with OS color scheme.
+   * Amazon product pages are always light-background.
+   * Near-black ensures the label reads clearly alongside the price.
+   */
+  --wi-text:       #1A0E06;   /* near-black with warm undertone */
+  --wi-text-hover: #000000;   /* pure black on hover */
+  --wi-accent:     #C4704A;   /* terracotta — used for clock icon only */
+
+  --wi-tooltip-bg:      #FDFAF7;
+  --wi-tooltip-border:  #E0D5C8;
+  --wi-tooltip-shadow:
+    0 8px 24px -4px rgb(28 43 58 / 0.12),
+    0 2px 6px -2px rgb(28 43 58 / 0.07);
+  --wi-tooltip-text:    #1C2B3A;
+  --wi-tooltip-muted:   #5C6B7A;   /* clearly readable on warm-white tooltip */
+  --wi-tooltip-divider: #E0D5C8;
+
+  --wi-badge-bg:   #FBF0E8;
+  --wi-badge-text: #8B4A2E;
+
+  --wi-banner-bg:     #FDFAF7;
+  --wi-banner-border: #E0D5C8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    /*
+     * In dark mode, the tooltip adapts — but the inline label stays dark
+     * because wi-text/wi-text-hover are NOT overridden here.
+     * Amazon's product pages have light backgrounds regardless of OS theme.
+     */
+    --wi-tooltip-bg:      #231E18;
+    --wi-tooltip-border:  #3D3028;
+    --wi-tooltip-shadow:
+      0 8px 24px -4px rgb(0 0 0 / 0.45),
+      0 2px 6px -2px rgb(0 0 0 / 0.28);
+    --wi-tooltip-text:    #F2E8DE;
+    --wi-tooltip-muted:   #B8A898;   /* clearly readable on #231E18 */
+    --wi-tooltip-divider: #3D3028;
+
+    --wi-badge-bg:   #2D1E14;
+    --wi-badge-text: #D4845E;
+
+    --wi-banner-bg:     #231E18;
+    --wi-banner-border: #3D3028;
+  }
+}
+
+/* ─── Inline Label ─────────────────────────────────────────────────────────── */
+
+.wi-label {
+  display: inline-block;
+  position: relative;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--wi-text);
+  cursor: default;
+  margin-top: 3px;
+  user-select: none;
+}
+
+.wi-label:hover {
+  color: var(--wi-text-hover);
+}
+
+.wi-label-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;       /* bold — appears alongside prices, must hold its own */
+  letter-spacing: 0.01em;
+}
+
+.wi-icon {
+  width: 11px;
+  height: 11px;
+  color: var(--wi-accent);
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+/* ─── Hover Tooltip ────────────────────────────────────────────────────────── */
+
+.wi-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 2147483647;
+  min-width: 210px;
+  max-width: 260px;
+  background: var(--wi-tooltip-bg);
+  border: 1px solid var(--wi-tooltip-border);
+  border-radius: 12px;
+  box-shadow: var(--wi-tooltip-shadow);
+  padding: 13px 15px 12px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.wi-label:hover .wi-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wi-tooltip { transition: none; }
+}
+
+/* Tooltip header row */
+.wi-tooltip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.wi-tooltip-brand {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--wi-accent);
+}
+
+.wi-tooltip-privacy {
+  font-size: 10px;
+  color: var(--wi-tooltip-muted);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Tooltip data rows */
+.wi-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+
+.wi-tooltip-label {
+  font-size: 11px;
+  color: var(--wi-tooltip-muted);
+  font-weight: 400;
+}
+
+.wi-tooltip-value {
+  font-size: 12px;
+  color: var(--wi-tooltip-text);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Divider */
+.wi-tooltip-divider {
+  height: 1px;
+  background: var(--wi-tooltip-divider);
+  margin: 9px 0;
+}
+
+/* Calculation breakdown */
+.wi-tooltip-calc {
+  font-size: 11px;
+  color: var(--wi-tooltip-muted);
+  text-align: center;
+  line-height: 1.7;
+}
+
+.wi-tooltip-calc strong {
+  color: var(--wi-tooltip-text);
+  font-weight: 600;
+}
+
+/* Footer note */
+.wi-tooltip-footer {
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--wi-tooltip-muted);
+  text-align: center;
+  opacity: 0.75;
+  letter-spacing: 0.01em;
+}
+
+/* ─── First-Run Banner ─────────────────────────────────────────────────────── */
+
+.wi-banner {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2147483647;
+  background: var(--wi-banner-bg);
+  border: 1px solid var(--wi-banner-border);
+  border-radius: 12px;
+  box-shadow:
+    0 12px 32px -6px rgb(28 43 58 / 0.12),
+    0 4px 8px -2px rgb(28 43 58 / 0.06);
+  padding: 14px 16px;
+  max-width: 290px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.wi-banner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wi-banner-brand {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--wi-accent);
+}
+
+.wi-banner-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  color: var(--wi-tooltip-muted);
+  font-size: 18px;
+  line-height: 1;
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: opacity 0.1s ease;
+}
+
+.wi-banner-close:hover {
+  opacity: 1;
+  color: var(--wi-tooltip-text);
+}
+
+.wi-banner-text {
+  font-size: 12px;
+  color: var(--wi-tooltip-muted);
+  line-height: 1.55;
+}
