@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* ─── Google Font ─────────────────────────────────────────────────────────── */
+/* ─── Google Font ──────────────────────────────────────────────────────────── */
 
 :root {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -9,52 +9,49 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   DESIGN TOKENS — Terracotta + Deep Navy
-   Warm, human, timeless. One accent: terracotta #C4704A.
+   DESIGN TOKENS
+   Calm consumer utility. Warm neutrals. Orange used sparingly.
+   Orange appears only on: logo icon, primary button, focused inputs, .accent text.
 ────────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Backgrounds */
-  --color-bg:           #F5F0EB;   /* warm sand */
-  --color-surface:      #FDFAF7;   /* warm white */
-  --color-surface-hover:#F0E8DF;   /* sand hover */
+  /* Backgrounds — warm off-white, lighter than before */
+  --color-bg:           #F7F4F0;
+  --color-surface:      #FDFCFB;
 
-  /* Borders */
-  --color-border:       #E0D5C8;   /* warm taupe */
-  --color-border-light: #EDE5DA;   /* lighter taupe */
+  /* Dividers */
+  --color-divider:      #E8E2DA;
 
   /* Text */
-  --color-text-primary:   #1C2B3A; /* deep navy */
-  --color-text-secondary: #4A5D6E; /* muted navy */
-  --color-text-muted:     #7D8E9C; /* soft blue-grey */
+  --color-text-primary:   #1A1208;
+  --color-text-secondary: #5C4F40;
+  --color-text-muted:     #9B8B78;
 
-  /* Accent — Terracotta, one color to rule them all */
+  /* Accent — orange, used sparingly */
   --color-accent:       #C4704A;
   --color-accent-hover: #A85C38;
-  --color-accent-light: #FBF0E8;
-  --color-accent-text:  #8B4A2E;
+
+  /* Form inputs */
+  --color-border:       #DDD4C8;
+  --color-border-focus: #C4704A;
 
   /* Semantic */
-  --color-success:       #5B8A6E;  /* forest green — for privacy badge */
-  --color-success-light: #EAF4EF;
+  --color-success:      #4A7C5E;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg:           #1A1612;
-    --color-surface:      #231E18;
-    --color-surface-hover:#2D2520;
-    --color-border:       #3D3028;
-    --color-border-light: #322820;
-    --color-text-primary:   #F2E8DE;
-    --color-text-secondary: #A89880;
-    --color-text-muted:     #7A6B58;
+    --color-bg:           #1C1710;
+    --color-surface:      #221D15;
+    --color-divider:      #352C20;
+    --color-text-primary:   #F0E8DC;
+    --color-text-secondary: #A8947C;
+    --color-text-muted:     #6E5E4A;
     --color-accent:       #D4845E;
     --color-accent-hover: #C4704A;
-    --color-accent-light: #2D1E14;
-    --color-accent-text:  #E8A080;
-    --color-success:       #6FA882;
-    --color-success-light: #0F2218;
+    --color-border:       #3A3025;
+    --color-border-focus: #D4845E;
+    --color-success:      #6FA882;
   }
 }
 
@@ -71,17 +68,8 @@
 body {
   background: var(--color-bg);
   color: var(--color-text-primary);
-  width: 340px;
-  min-height: 480px;
+  width: 320px;
   overflow-x: hidden;
-}
-
-/* ─── Typography ──────────────────────────────────────────────────────────── */
-
-h1, h2, h3 {
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
 }
 
 /* ─── Layout ──────────────────────────────────────────────────────────────── */
@@ -89,7 +77,6 @@ h1, h2, h3 {
 .popup-root {
   display: flex;
   flex-direction: column;
-  min-height: 480px;
   background: var(--color-bg);
 }
 
@@ -98,9 +85,8 @@ h1, h2, h3 {
 .popup-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px 14px;
-  border-bottom: 1px solid var(--color-border);
+  padding: 16px 20px 15px;
+  border-bottom: 1px solid var(--color-divider);
   background: var(--color-surface);
 }
 
@@ -110,6 +96,7 @@ h1, h2, h3 {
   gap: 9px;
 }
 
+/* Orange ONLY on the logo icon */
 .popup-logo-icon {
   width: 28px;
   height: 28px;
@@ -119,70 +106,149 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   color: white;
+  flex-shrink: 0;
 }
 
 .popup-logo-text {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.03em;
-}
-
-.popup-version {
-  font-size: 11px;
-  color: var(--color-text-muted);
-  background: var(--color-surface-hover);
-  padding: 2px 8px;
-  border-radius: 20px;
-  border: 1px solid var(--color-border);
 }
 
 /* ─── Content ─────────────────────────────────────────────────────────────── */
 
 .popup-content {
-  flex: 1;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
-/* ─── Onboarding Hero ─────────────────────────────────────────────────────── */
+/* ─── Loading ─────────────────────────────────────────────────────────────── */
 
-.onboarding-hero {
+.loading-state {
+  padding: 40px 20px;
   text-align: center;
-  padding: 6px 0 2px;
+  color: var(--color-text-muted);
+  font-size: 13px;
 }
 
-.onboarding-emoji {
-  font-size: 38px;
-  margin-bottom: 11px;
-  display: block;
+/* ─── Hero (Onboarding) ───────────────────────────────────────────────────── */
+
+.hero {
+  padding: 4px 0 2px;
 }
 
-.onboarding-title {
-  font-size: 19px;
+.hero-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--color-accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 14px;
+}
+
+.hero-title {
+  font-size: 18px;
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.03em;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
+  line-height: 1.25;
 }
 
-.onboarding-subtitle {
+.hero-subtitle {
   font-size: 13px;
   color: var(--color-text-secondary);
   line-height: 1.55;
 }
 
-/* ─── Form Controls ───────────────────────────────────────────────────────── */
+/* ─── Divider ─────────────────────────────────────────────────────────────── */
 
-.form-group {
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-divider);
+}
+
+/* ─── Profile Summary (Settings) ─────────────────────────────────────────── */
+
+/* Replaces the 4 stat cards. One row: tier label + hourly rate. */
+.profile-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profile-summary-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.profile-tier {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* Orange used here — this is one of the allowed uses */
+.profile-rate {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.profile-schedule {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+/* ─── Derived Values Block (Onboarding) ───────────────────────────────────── */
+
+.derived-block {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.form-label {
+.derived-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.derived-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.derived-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+/* Orange accent class — reused on hourly rate text */
+.accent {
+  color: var(--color-accent);
+}
+
+/* ─── Form Controls ───────────────────────────────────────────────────────── */
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
   font-size: 11px;
   font-weight: 600;
   color: var(--color-text-muted);
@@ -190,35 +256,35 @@ h1, h2, h3 {
   letter-spacing: 0.07em;
 }
 
-.form-select {
+.field-select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px 36px 10px 12px;
   border: 1.5px solid var(--color-border);
-  border-radius: 9px;
+  border-radius: 8px;
   background: var(--color-surface);
   color: var(--color-text-primary);
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237D8E9C' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239B8B78' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
-  padding-right: 36px;
   transition: border-color 0.15s ease;
 }
 
-.form-select:focus {
+/* Orange on focus — one of the allowed uses */
+.field-select:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 12%, transparent);
 }
 
-.form-input {
+.field-input {
   width: 100%;
   padding: 10px 12px;
   border: 1.5px solid var(--color-border);
-  border-radius: 9px;
+  border-radius: 8px;
   background: var(--color-surface);
   color: var(--color-text-primary);
   font-size: 14px;
@@ -226,106 +292,31 @@ h1, h2, h3 {
   transition: border-color 0.15s ease;
 }
 
-.form-input:focus {
+.field-input:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 12%, transparent);
 }
 
-.form-input::placeholder {
+.field-input::placeholder {
   color: var(--color-text-muted);
 }
 
-.form-hint {
+.field-hint {
   font-size: 11px;
   color: var(--color-text-muted);
 }
 
-/* ─── Preview Card ────────────────────────────────────────────────────────── */
+/* ─── Primary Button ──────────────────────────────────────────────────────── */
 
-.preview-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-
-.preview-card-label {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-muted);
-  margin-bottom: 9px;
-}
-
-.preview-price-row {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.preview-price {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
-}
-
-.preview-time {
-  font-size: 12px;
-  color: var(--color-accent);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: 500;
-}
-
-.preview-divider {
-  width: 100%;
-  height: 1px;
-  background: var(--color-border);
-  margin: 10px 0;
-}
-
-.preview-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-}
-
-.preview-meta-label {
-  color: var(--color-text-muted);
-}
-
-.preview-meta-value {
-  color: var(--color-text-secondary);
-  font-weight: 500;
-}
-
-/* ─── Privacy Badge ───────────────────────────────────────────────────────── */
-
-.privacy-note {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 12px;
-  background: var(--color-success-light);
-  border-radius: 8px;
-  font-size: 11.5px;
-  color: var(--color-success);
-  font-weight: 500;
-}
-
-/* ─── Buttons ─────────────────────────────────────────────────────────────── */
-
+/* Orange button — one of the allowed uses */
 .btn-primary {
   width: 100%;
   padding: 11px;
   background: var(--color-accent);
   color: white;
   border: none;
-  border-radius: 9px;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   font-family: inherit;
@@ -343,96 +334,18 @@ h1, h2, h3 {
 }
 
 .btn-primary:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
 }
 
-/* ─── Settings View ───────────────────────────────────────────────────────── */
+/* ─── Footer Note ─────────────────────────────────────────────────────────── */
 
-.settings-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
-}
-
-.settings-section {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-}
-
-.settings-section-title {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-muted);
-}
-
-/* ─── Stats Grid ──────────────────────────────────────────────────────────── */
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.stat-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 11px 12px;
-}
-
-.stat-label {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--color-text-muted);
-  margin-bottom: 4px;
-}
-
-.stat-value {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
-}
-
-/* ─── Status Indicator ────────────────────────────────────────────────────── */
-
-.status-active {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+.footer-note {
   font-size: 11px;
-  color: var(--color-success);
-  font-weight: 600;
-  background: var(--color-success-light);
-  padding: 3px 9px;
-  border-radius: 20px;
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-success);
-}
-
-/* ─── Footer ──────────────────────────────────────────────────────────────── */
-
-.popup-footer {
-  padding: 11px 20px;
-  border-top: 1px solid var(--color-border);
-  text-align: center;
-  font-size: 10px;
   color: var(--color-text-muted);
-  background: var(--color-surface);
-  letter-spacing: 0.01em;
+  text-align: center;
+  line-height: 1.4;
 }
 
 /* ─── Reduced Motion ──────────────────────────────────────────────────────── */
