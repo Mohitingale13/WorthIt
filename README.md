@@ -14,9 +14,18 @@
 
 ---
 
+## 📸 Screenshots
+
+| Extension Popup | Live Price Label |
+|---|---|
+| ![WorthIt popup UI showing salary profile and hourly value](images/UI.png) | ![WorthIt label showing hours of work beneath a product price](images/normal%20UI.png) |
+
+
+
 ## 🚀 How to Install and Use (For Normal Users)
 
 Since this extension is completely free and open-source, you can install it directly on your browser without going through the Chrome Web Store.
+
 
 ### Installation Steps
 
