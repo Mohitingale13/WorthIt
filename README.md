@@ -16,9 +16,15 @@
 
 ## 📸 Screenshots
 
-| Extension Popup | Live Price Label |
-|---|---|
-| ![WorthIt popup UI showing salary profile and hourly value](images/UI.png) | ![WorthIt label showing hours of work beneath a product price](images/normal%20UI.png) |
+**Extension popup — your salary profile at a glance**
+
+<img src="images/UI.png" alt="WorthIt popup showing Entry Level profile, ₹189/hr hourly value and Save button" width="800" />
+
+<br/>
+
+**Live price label on a product page**
+
+<img src="images/normal UI.png" alt="WorthIt label showing ≈ 4.2 hours of your work beneath a product price on Amazon" width="800" />
 
 
 
