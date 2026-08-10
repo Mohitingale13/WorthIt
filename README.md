@@ -4,17 +4,17 @@
 
 **WorthIt** is a privacy-first Chrome Extension that translates prices on India's biggest shopping sites into the actual hours of work it took you to earn them. By providing personal context, it helps you make more intentional purchasing decisions—without creating guilt.
 
-### ✅ Supported Sites
+### Supported Sites
 | Site | Status |
 |---|---|
-| Amazon India (`amazon.in`) | ✅ Supported |
-| Flipkart (`flipkart.com`) | ✅ Supported |
-| Myntra (`myntra.com`) | ✅ Supported |
-| Meesho (`meesho.com`) | ✅ Supported |
+| Amazon India (`amazon.in`) | Supported |
+| Flipkart (`flipkart.com`) | Supported |
+| Myntra (`myntra.com`) | Supported |
+| Meesho (`meesho.com`) | Supported |
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 **Extension popup — your salary profile at a glance**
 
@@ -26,12 +26,11 @@
 
 <img src="images/normal UI.png" alt="WorthIt label showing ≈ 4.2 hours of your work beneath a product price on Amazon" width="800" />
 
+---
 
-
-## 🚀 How to Install and Use (For Normal Users)
+## How to Install (For Normal Users)
 
 Since this extension is completely free and open-source, you can install it directly on your browser without going through the Chrome Web Store.
-
 
 ### Installation Steps
 
@@ -54,7 +53,7 @@ That's it! The extension is installed.
 
 ---
 
-## 🔒 Privacy First
+## Privacy
 
 WorthIt is designed to respect your privacy completely:
 - **No data leaves your device:** All calculations happen locally on your machine.
@@ -64,7 +63,7 @@ WorthIt is designed to respect your privacy completely:
 
 ---
 
-## 🛠️ Development (For Developers)
+## Development (For Developers)
 
 Want to build it from source or contribute?
 
